@@ -1,0 +1,86 @@
+/* PdfExtractor.css */
+.container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+h2 {
+    color: #333;
+    margin-top: 20px;
+}
+
+pre {
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    white-space: pre-wrap; /* Allows text to wrap */
+    word-wrap: break-word; /* Breaks long words */
+}
+
+.experience {
+    color: #007BFF; /* Bootstrap primary color */
+}
+
+.projects {
+    color: #28A745; /* Bootstrap success color */
+}
+
+
+/* Main container */
+.pdf-extractor-container {
+    background-color: #ffffff; /* White background */
+    border: 4px solid #1e3a8a; /* Dark blue border */
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+    padding: 20px; /* Padding around content */
+    margin: 20px auto; /* Centered with margin */
+    width: 80%; /* Occupy 80% of the page width */
+    max-width: 900px; /* Max width to prevent it from stretching too much */
+    font-family: 'Courier New', monospace; /* Monospaced font */
+    color: #1e3a8a; /* Dark blue text color */
+  }
+  
+  /* Heading styles */
+  .pdf-extractor-container h2 {
+    font-size: 1.75rem; /* Large heading */
+    margin-bottom: 10px; /* Space below heading */
+    text-align: center; /* Centered heading */
+    color: #1e40af; /* Slightly lighter blue */
+    font-family: 'Monaco', monospace; /* Monospace font for a techy look */
+  }
+  
+  /* Preformatted text */
+  .pdf-extractor-container pre {
+    background-color: #f1f5f9; /* Light background for pre tags */
+    padding: 15px; /* Space inside pre block */
+    border: 2px solid #1e3a8a; /* Border around the pre block */
+    border-radius: 10px; /* Rounded corners */
+    font-size: 10px; /* Slightly larger font for readability */
+    color: #000000; /* Black text for content clarity */
+    white-space: pre-wrap; /* Maintain spacing, but allow wrapping */
+    line-height: 1.5; /* Good line spacing */
+    overflow-x: auto; /* Horizontal scroll if content is too wide */
+  }
+  
+  /* Add margin to space out sections */
+  .pdf-extractor-container h2 + pre {
+    margin-bottom: 20px;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .pdf-extractor-container {
+      width: 95%; /* Increase width on smaller screens */
+      padding: 15px; /* Reduce padding */
+    }
+  
+    .pdf-extractor-container h2 {
+      font-size: 1.5rem; /* Slightly smaller font for headings */
+    }
+  
+    .pdf-extractor-container pre {
+      font-size: 0.9rem; /* Slightly smaller font for content */
+    }
+  }
+  

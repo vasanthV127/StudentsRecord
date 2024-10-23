@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InTrain Tech</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Overall page styling */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #fff;
+            color: #333;
+        }
+        /* Right-side content */
+        .main-content {
+            margin-left: 160px; /* Keep this for sidebar adjustment */
+            margin-top: 0px; /* Adjust this value based on your navbar's height */
+            width: calc(100% - 260px);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+
+        /* Main flex layout */
+        .main-content-wrapper {
+            display: flex;
+            padding: 20px;
+            
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: radial-gradient(circle at 85.4% 50.8%, rgb(14, 72, 222) 0%, rgb(3, 22, 65) 74.2%);
+            color: #fff;
+            padding: 1.5rem;
+            border-radius: 0 20px 20px 0;
+            height: 100vh;
+            width: 240px;
+            box-sizing: border-box;
+        }
+
+        .sidebar li {
+            cursor: pointer;
+            padding: 1rem;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar li:hover {
+            background-color: white;
+            border-radius: 10px;
+            color:blue;
+        }
+
+        .sidebar li i {
+            margin-right: 0.5rem;
+        }
+
+        /* Right-side content */
+        .main-content {
+            margin-left: 260px; /* Adjust this value to ensure it's wide enough to clear the fixed sidebar */
+            width: calc(100% - 260px);
+            display: flex;
+            flex-direction: column;
+            
+        }
+
+        /* Content box styling */
+        .content-box {
+            animation: fadeIn 1s ease-in-out;
+            border-radius: 20px;
+            padding: 20px;
+            color: #333;
+            margin-bottom: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .content-box h3 {
+            color: #00447c;
+            margin-bottom: 1rem;
+        }
+
+        .content-box select {
+            background: #e6e6e6;
+            border: 1px solid #00447c;
+            padding: 8px;
+            border-radius: 5px;
+            width: 50%;
+            color: #333;
+            transition: border-color 0.3s;
+        }
+
+        .content-box select:focus {
+            border-color: #00447c;
+        }
+
+
+        /* Analytics section styling */
+
+        /* Footer styling */
+        footer {
+            color: #00447c;
+            text-align: center;
+            padding: 1rem;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Header styling */
+        
+        /* Container for the selection boxes */
+        .selection-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        
+        /* Individual selection box styling */
+        .selection-box1 {
+            flex: 1;
+            background-image: url("data:image/jpeg;base64,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");
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border:solid 1px rgb(3, 22, 65);
+        }
+        .selection-box2 {
+            flex: 1;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border:solid 1px rgb(3, 22, 65);
+            background-image: url("");
+        }
+        .selection-box3 {
+            flex: 1;
+            background-image: url("data:image/jpeg;base64,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");
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border:solid 1px rgb(3, 22, 65);
+        }
+        
+        .selection-box h3 {
+            color:white;
+            margin-bottom: 1rem;
+        }
+        
+        .selection-box select {
+            background: white;
+            border: 1px solid #cccccc;
+            padding: 8px;
+            border-radius: 5px;
+            width: 80%;
+            color: #333;
+            transition: border-color 0.3s;
+        }
+        
+        .selection-box select:focus {
+            border-color: #0074bd;
+        }
+        .logo {
+            display: flex; /* Use flexbox for alignment */
+            align-items: center; /* Center items vertically */
+        }
+
+        .logo-img {
+            width: 30px; /* Adjust size as needed */
+            height: 20px;
+            margin-right: 10px; /* Space between the logo and the title */
+        }
+        .scrolling-container {
+            display: flex;
+            overflow: hidden; /* Hide the overflow */
+            white-space: nowrap; /* Prevent line breaks */
+            width: 100vw;
+        }
+
+        .item {
+            display: inline-block;
+            min-width: 200px;
+            height: 150px;
+            margin-right: 5px;
+            text-align: center;
+            line-height: 150px;
+            font-size: 20px;
+            border-radius: 10px;
+            flex-shrink: 0; /* Prevent shrinking */
+        }
+
+        
+        
+        .main-heading{
+            font-size:40px;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            color: 	#00008b;
+            text-align: center;
+        }
+
+        
+        @keyframes fadeLeft {
+            from {
+                opacity: 0;
+                transform: translateX(20px); /* Start 20px to the right */
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0); /* End at the original position */
+            }
+        }
+
+        /* Apply the animation to the desired element */
+        .main-heading{
+            animation: fadeLeft 1s ease-in-out;
+        }
+        .companies-head1{
+            color:white;
+            font-size:25px;
+            margin-bottom:15px;
+            text-align: center;
+        }
+
+        .companies-head2{
+            color:#00447c;
+            font-size:25px;
+            margin-bottom:15px;
+            text-align: center;
+        }
+        
+        .next-button{
+            background:  #e6e6e6;
+            color:  #00447c;
+            padding:5px;
+            margin-top:10px;
+            border-radius:10px;
+            width:80px;
+            height:40px
+        }
+       
+
+       
+        .container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .company-btn {
+            background-color: white; /* Ensure background color is white */
+            color: #00008B;
+            padding:  3px;
+            border: 1px solid #00008B;
+            border-radius: 25px;
+            cursor: pointer;
+            flex: 1;
+            margin: 0 5px;
+            text-align: center;
+            width:auto;
+        }
+
+        .company-btn:hover {
+            background: radial-gradient(circle at 85.4% 50.8%, rgb(14, 72, 222) 0%, rgb(3, 22, 65) 74.2%);
+            color: white;
+        }
+
+        .company-btn:active {
+            background-color: white;
+            color: #007BFF; /* Ensure the text color remains blue */
+        }
+        .companies-heading{
+            font-size:25px;
+            margin: 20px;
+            font-weight: 500;
+            color:	#00008B;
+            
+        }
+        .companies-para{
+            color:black ;
+            text-align: center;
+        }
+        .interview-button{
+        align-items: center;
+        appearance: none;
+        background: radial-gradient(circle at 85.4% 50.8%, rgb(14, 72, 222) 0%, rgb(3, 22, 65) 74.2%);
+        border-radius:24px;
+        border-width: 0;
+        box-sizing: border-box;
+        color: #fff;
+        cursor: pointer;
+        display: inline-flex;
+        font-family: "JetBrains Mono",monospace;
+        height: 48px;
+        justify-content: center;
+        line-height: 1;
+        list-style: none;
+        overflow: hidden;
+        padding-left: 16px;
+        padding-right: 16px;
+        position: relative;
+        text-align: left;
+        text-decoration: none;
+        transition: box-shadow .15s,transform .15s;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        white-space: nowrap;
+        will-change: box-shadow,transform;
+        font-size: 18px;
+        width:240px;
+        }
+
+        .interview-button:focus {
+        box-shadow: #D6D6E7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+        }
+
+        .interview-button:hover {
+        box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+        transform: translateY(-2px);
+        }
+
+        .interview-button:active {
+        box-shadow: #D6D6E7 0 3px 7px inset;
+        transform: translateY(2px);
+        }
+        .interview-btn-container{
+            display: flex;
+            justify-content: center;
+
+        }
+
+        .para-1{
+            color: #e6e6e6;
+        }
+        .premium-btn{
+            background:  radial-gradient(circle at 85.4% 50.8%, rgb(14, 72, 222) 0%, rgb(3, 22, 65) 74.2%);
+            color:white;
+            width:85px;
+            padding:10px;
+            border-radius : 14px;
+            margin-top: 10px;
+        }
+
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 500px;
+            border-radius: 30px;
+            padding: 16px;
+            background: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            width: 100%;
+            box-sizing: border-box;
+            border:#00008B 1px solid;
+        }
+
+        .chat-header {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 16px;
+            color: #00008B;
+        }
+        
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px;
+            margin-bottom: 16px;
+            border-radius: 4px;
+            background-color: #ffffff;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .chat-messages .message {
+            max-width: 80%;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .chat-messages .message.bot-message {
+            align-self: flex-start;
+            background-color: #0074bd;
+            color: white;
+        }
+
+        .chat-messages .message.user-message {
+            align-self: flex-end;
+            background-color: #ffffff;
+            color: #00447c;
+        }
+
+        .chat-messages .message p {
+            margin: 0;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 8px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            color: #333;
+            background-color: #ffffff;
+            transition: border-color 0.3s;
+        }
+
+        .chat-input input:focus {
+            border-color: #0074bd;
+        }
+
+        .chat-input button {
+            padding: 8px 16px;
+            background:  radial-gradient(circle at 85.4% 50.8%, rgb(14, 72, 222) 0%, rgb(3, 22, 65) 74.2%);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .chat-input button:hover {
+            background-color: #005c9c;
+        }
+
+        /* Fixed buttons */
+
+
+        /* Footer styling */
+        footer {
+            color: #00447c;
+            text-align: center;
+            padding: 1rem;
+            bottom: 0;
+            width: 100%;
+        }
+        .message-logo {
+    width: 30px;  /* Adjust the size as needed */
+    height: 30px;
+    margin-right: 8px;  /* Space between the logo and the message text */
+    border-radius: 50%;  /* Make the logo round if needed */
+    object-fit: cover;
+}
+
+.user-message, .bot-message {
+    display: flex;
+    align-items: center;
+}
+.premium-btn-login{
+    background:  radial-gradient(circle at 85.4% 50.8%, rgb(14, 72, 222) 0%, rgb(3, 22, 65) 74.2%);
+            color:white;
+            width:95px;
+            padding:10px;
+            border-radius : 14px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+}
+        
+    </style>
+</head>
+<body class="font-sans">
+
+    <div class="main-content-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <ul class="space-y-2">
+                <div class="logo flex items-center"> 
+                    <img src="/static/images/WhatsApp-Image-2023-12-27-at-11.54.38.jpg" alt="InTrain Tech Logo" class="logo-img">
+                    <span>InTrain Tech</span> 
+                </div>
+                <li class="p-2 flex items-center">
+                    <i class="fas fa-robot mr-2"></i> Interview Bot
+                </li>
+                <li class="p-2 cursor-pointer flex items-center">
+                    <a href="https://interview.intraintech.com/price/" class="flex items-center">
+                    <i class="fas fa-headset mr-2"></i> 24/7 AI Assistance
+                    </a>
+                </li>
+                <li class="p-2 cursor-pointer flex items-center">
+                    <a href="https://interview.intraintech.com/resume-builder/" class="flex items-center">
+                    <i class="fas fa-file-alt mr-2"></i> Resume Building
+                    </a>
+                </li>
+                <li class="p-2 cursor-pointer flex items-center">
+                    <a href="https://interview.intraintech.com/ebooks/" class="flex items-center">
+                    <i class="fas fa-book mr-2"></i> E-books
+                    </a>
+                </li>
+                <li class="p-2 cursor-pointer flex items-center">
+                    <a href="https://interview.intraintech.com/price/" class="flex items-center">
+                    <i class="fas fa-microphone-alt mr-2"></i> Vocal InterviewBot
+                    </a>
+                </li>
+                <li class="p-2 cursor-pointer flex items-center">
+                    <a href="https://interview.intraintech.com/skills-page/" class="flex items-center">
+                    <i class="fas fa-chalkboard-teacher mr-2"></i> Master Classes
+                    </a>
+                </li>
+                <li class="p-2 cursor-pointer flex items-center">
+                    <a href="https://interview.intraintech.com/" class="flex items-center">
+                    <i class="fas fa-trophy mr-2"></i> Success Story
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main content -->
+        <main class="main-content">
+            <div class="content-box">
+                <h2 class= "main-heading">Master Your Interviews with AI-Driven Precision</h2>
+                <div class="selection-container">
+        <!-- Choose Your Company -->
+        <div class="selection-box2 fade-in">
+            <h2 class="companies-head2">Hurray!! Great Company</h2>
+            <p class="companies-para">{{company}} </p>
+            
+        </div>
+        <div class="selection-box2 fade-in">
+            <h2 class="companies-head2">Great domain achieved!</h2>
+            <p class="companies-para">{{domain}} </p>
+            
+        </div>
+        <div class="selection-box2 fade-in">
+            <h2 class="companies-head2">Amazing Module taken!</h2>
+            <p class="companies-para">{{Module}} </p>
+            
+        </div>
+                </div>
+            </div>
+            <div class="chat-container fade-in">
+                <div class="chat-header">
+                    <h2>Interview Prep Chatbot</h2>
+                    <p>Preparing for <span id="selectedCompany">{{ company }}</span> in the domain of <span id="selectedDomain">{{ domain }}</span> for the module <span id="selectedModule">{{ Module }}</span></p>
+                </div>
+                <div class="chat-messages" id="chat-messages">
+                </div>
+                <div class="chat-input">
+                    <input type="text" id="messageInput" placeholder="Type your message here..." autocomplete="off">
+                    <button id="sendBtn">Send</button>
+                </div>
+            </div>
+            <form action="{{ url_for('logout') }}" method="post" class="flex items-center">
+                <button type="submit" class="flex items-center premium-btn-login">
+                    <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                </button>
+            </form>
+            <div class="selection-container">
+                <!-- Choose Your Company -->
+                <div class="selection-box2 fade-in">
+                    <h2 class="companies-head2">No of questions answered correctly</h2>
+                    <p class="companies-para">{{ correct_answers }} </p>
+                </div>
+                <div class="selection-box2 fade-in">
+                    <h2 class="companies-head2">No of questions answered wrong</h2>
+                    <p class="companies-para">{{ incorrect_answers }} </p>
+                    
+                </div>
+                <div class="selection-box2 fade-in">
+                    <h2 class="companies-head2">Feedback</h2>
+                    <p >Specify your valuable Feedback for further devlopments</p>
+                    <a href="https://forms.gle/j3b4i8u6AZRLNRXu5">
+                        <button class="premium-btn">Feedback</button>
+                    </a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        let mediaRecorder;
+        let audioChunks = [];
+        let isRecording = false;
+
+        document.getElementById('sendBtn').addEventListener('click', function() {
+            var messageInput = document.getElementById('messageInput');
+            var message = messageInput.value;
+            if (message.trim() !== '') {
+                sendMessageToServer(message);
+            }
+    });
+
+    document.getElementById('recordBtn').addEventListener('click', function() {
+        if (isRecording) {
+            alert('the recording is stopped');
+            stopRecording();
+            this.classList.remove('red');
+        } else {
+            alert('the recording is started');
+            startRecording();
+            this.classList.add('red');
+        }
+    });
+
+    function sendMessageToServer(message) {
+    var chatMessages = document.getElementById('chat-messages');
+
+    // User message
+    var userMessageElement = document.createElement('div');
+    userMessageElement.classList.add('message', 'user-message', 'message-box');
+
+    var userLogo = document.createElement('img');
+    userLogo.src = '/static/images/user.jpeg'; // Replace with the actual path to the user logo
+    userLogo.alt = 'User Logo';
+    userLogo.classList.add('message-logo');
+
+    var userMessageText = document.createElement('p');
+    userMessageText.textContent = message;
+
+    userMessageElement.appendChild(userLogo);
+    userMessageElement.appendChild(userMessageText);
+    chatMessages.appendChild(userMessageElement);
+
+    fetch('/chat', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            message: message,
+            company: "{{ company }}",
+            domain: "{{ domain }}",
+            Module: "{{ Module }}"
+        })
+    })
+    .then(response => {
+        if (response.redirected) {
+        window.location.href = response.url;
+        } else {
+        return response.json();
+        }
+    })
+    .then(data => {
+        var botMessageElement = document.createElement('div');
+        botMessageElement.classList.add('message', 'bot-message', 'message-box');
+
+        var botLogo = document.createElement('img');
+        botLogo.src = '/static/images/ai.png'; // Replace with the actual path to the bot logo
+        botLogo.alt = 'Bot Logo';
+        botLogo.classList.add('message-logo');
+
+        var botMessageText = document.createElement('p');
+        botMessageText.textContent = data.response;
+
+        botMessageElement.appendChild(botLogo);
+        botMessageElement.appendChild(botMessageText);
+        chatMessages.appendChild(botMessageElement);
+
+        messageInput.value = '';
+        chatMessages.scrollTop = chatMessages.scrollHeight;  // Auto-scroll to the bottom
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        var errorElement = document.createElement('div');
+        errorElement.classList.add('message', 'error-message', 'message-box');
+        errorElement.textContent = 'Error: ' + error.message;
+        chatMessages.appendChild(errorElement);
+    });
+}
+
+    function startRecording() {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            alert('Your browser does not support audio recording');
+            return;
+        }
+
+        navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+
+            mediaRecorder.ondataavailable = function(event) {
+                audioChunks.push(event.data);
+            };
+
+            mediaRecorder.onstop = function() {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                const formData = new FormData();
+                formData.append('audio', audioBlob, 'audio.wav');
+
+                fetch('/upload_audio', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    sendMessageToServer(data.transcript);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            };
+
+            mediaRecorder.start();
+            isRecording = true;
+        }).catch(function(err) {
+            console.error('The following error occurred: ' + err);
+        });
+    }
+
+    function stopRecording() {
+        if (mediaRecorder && isRecording) {
+            mediaRecorder.stop();
+            isRecording = false;
+        }
+    }
+
+
+</script>
+</body>
+
+</html>
+
+
+
+Stats Section
+      <div className="p-9 bg-white mt-8">
+        <div className="grid grid-cols-3 gap-8">
+          {/* Correct Answers */}
+          <div className="p-4 border shadow-md rounded-3xl border-x-4 border-y-4 border-blue-900 shadow-black">
+            <h2 className="text-xl font-mono">No of questions answered correctly:</h2>
+            <p className="mt-2 text-3xl font-mono mx-3">0</p>
+          </div>
+
+          {/* Incorrect Answers */}
+          <div className="p-4 border shadow-md rounded-3xl border-x-4 border-y-4 border-blue-900 shadow-black">
+            <h2 className="text-xl font-mono">No of questions answered wrong:</h2>
+            <p className="mt-2 text-3xl font-mono mx-3">0</p>
+          </div>
+
+          {/* Feedback Section */}
+          <div className="p-4 border shadow-md rounded-3xl border-x-4 border-y-4 border-blue-900 shadow-black">
+            <h2 className="text-xl font-sans">Feedback:</h2>
+            <p className="mt-2 text-gray-600 font-mono mx-3">
+              Specify your valuable Feedback for further developments
+            </p>
+            <button className="mt-4 px-6 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition duration-200 font-mono">
+              Feedback
+            </button>
+          </div>
+        </div>
+      </div>
